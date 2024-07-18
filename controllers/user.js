@@ -123,7 +123,12 @@ class UserController {
     try {
       const { userId } = req.session;
       const data = await User.findByPk(userId, {
-        include: Community
+        include: {
+          model: Community,
+          include: {
+            model: Persona
+          }
+        }
       });
       res.render("communities", { data });
     } catch (error) {
