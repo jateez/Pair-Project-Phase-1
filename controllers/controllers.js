@@ -2,7 +2,7 @@ class Controller {
   static async home(req, res) {
     try {
       // res.send(req.session.userId);
-      res.render('login1');
+      res.render('home');
     } catch (error) {
       res.send(error);
     }
@@ -15,13 +15,13 @@ class Controller {
       res.send(error);
     }
   }
-  static async home() {
-    try {
-      res.send("Home");
-    } catch (error) {
-      res.send(error);
-    }
-  }
+  // static async home() {
+  //   try {
+  //     res.render("Home");
+  //   } catch (error) {
+  //     res.send(error);
+  //   }
+  // }
 }
 
 module.exports = Controller;

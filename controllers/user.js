@@ -101,7 +101,7 @@ class UserController {
     try {
       let { userId } = req.session;
       let { firstName, lastName, gender, dateOfBirth } = req.body;
-      let userProfile = await findByPk(userId);
+      let userProfile = await Profile.findByPk(userId);
       if (!userProfile) {
         let data = await Profile.create({ firstName, lastName, gender, dateOfBirth });
         await User.update({
@@ -123,7 +123,12 @@ class UserController {
     try {
       const { userId } = req.session;
       const data = await User.findByPk(userId, {
-        include: Community
+        include: {
+          model: Community,
+          include: {
+            model: Persona
+          }
+        }
       });
       res.render("communities", { data });
     } catch (error) {
