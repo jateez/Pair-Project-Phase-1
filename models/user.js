@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsToMany(models.Community, { through: models.UserCommunity });
     }
 
-    async getDataComunitiesPersona(id){
+    async getDataComunitiesPersona(id) {
       return await User.findAll({
         where: id,
         include: {
@@ -59,7 +59,9 @@ module.exports = (sequelize, DataTypes) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(user.password, salt);
     user.password = hash;
-    // user.ProfileId = user.id;
+    if (!user.role) {
+      user.role = 2;
+    }
   })
   return User;
 };

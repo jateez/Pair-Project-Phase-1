@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Communities</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@4.0.8/css/line.min.css">
@@ -89,7 +89,7 @@
 <body>
     <nav>
         <div class="container">
-            <h2 class="log">Project X</h2>
+            <a href="/" class="log">Project X</a>
 
             <button id="dropdownUserAvatarButton" data-dropdown-toggle="dropdownAvatar"
                 class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -102,12 +102,16 @@
             <div id="dropdownAvatar"
                 class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600">
                 <div class="px-4 py-3 text-sm text-gray-900 dark:text-white">
-                    <div>Bonnie Green</div>
-                    <div class="font-medium truncate">name@flowbite.com</div>
+                    <div>
+                        <%= data.Profile.fullName %>
+                    </div>
+                    <div class="font-medium truncate">
+                        <%= data.email %>
+                    </div>
                 </div>
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownUserAvatarButton">
                     <li>
-                        <a href="#"
+                        <a href="/<%= userId %>/profile"
                             class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                     </li>
                     <li>
@@ -127,20 +131,21 @@
             </div>
         </div>
     </nav>
+
     <div class="hero bg-base-200 min-h-screen">
         <div class="hero-content text-center">
             <div class="max-w-md">
-                <h1 class="text-5xl font-bold">Hello Wellcome</h1>
-                <p class="py-6">
-                    Congratulations, you have successfully registered
-                </p>
+                <h1 class="text-5xl font-bold">Hola!</h1>
 
                 <% if (!data.Communities.length) { %>
+                    <p class="py-6">
+                        You seem has not join any server yet, take your first step now!
+                    </p>
                     <div class="flex justify-center">
                         <svg width="64" height="64" style="align-items: center;" viewBox="0 0 64 64" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g id="study">
-                            <rect width="64" height="64" />
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g id="study">
+                                <rect width="64" height="64" />
                                 <g id="smoke">
                                     <path id="smoke-2"
                                         d="M9 21L9.55279 19.8944C9.83431 19.3314 9.83431 18.6686 9.55279 18.1056L9 17L8.44721 15.8944C8.16569 15.3314 8.16569 14.6686 8.44721 14.1056L9 13"
@@ -206,31 +211,39 @@
                         </svg>
                     </div>
                     <% } else { %>
-                        <% data.Communities.forEach(el=> { %>
-                            <div class="overflow-x-auto">
-                                <table class="table">
-                                    <thead>
-                                        <tr class="text-center">
-                                            <th>You Server</th>
-                                            <th>Nickname</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
+                        <div class="overflow-x-auto">
+                            <table class="table">
+                                <thead>
+                                    <tr class="text-center">
+                                        <th>Communities</th>
+                                        <th>Nickname</th>
+                                        <% if (data.role===1) { %>
+                                            <th>Action</th>
+                                            <% } %>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% data.Communities.forEach(el=> { %>
                                         <tr class="hover text-center">
                                             <td>
                                                 <%= el.name %>
                                             </td>
                                             <td>
-                                                <%= console.log("nickname");%>
+                                                <%= el.Personas[0].nickname %>
                                             </td>
+                                            <% if (data.role) { %>
+                                                <td>
+                                                    <a href="/<%= userId %>/communities/<%= el.id %>/delete"></a>
+                                                </td>
+                                                <% } %>
                                         </tr>
-                                    </tbody>
-                                    <% }) %>
-                                </table>
-                            </div>
-                            <% } %>
-                                <a class="btn btn-primary" href="/">Create Server</a>
-                                <a class="btn btn-primary" href="/">Join Server</a>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        </div>
+                        <% } %>
+                            <a class="btn btn-primary" href="/<%= userId %>/communities/create">Create Server</a>
+                            <a class="btn btn-primary" href="/<%= userId %>/communities/join">Join Server</a>
             </div>
         </div>
     </div>

@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs/dist/bcrypt.js");
-const { User, Persona, Community, Profile } = require("../models/index.js");
-const { Op } = require("sequelize");
+const { User, Persona, Community, Profile, CommunityPersona, UserCommunity } = require("../models/index.js");
+const { Op, where } = require("sequelize");
 class UserController {
   // GET Register
   static async showRegister(req, res) {
@@ -46,6 +46,7 @@ class UserController {
       }
 
       req.session.userId = user.id;
+      req.session.role = user.role;
       return res.redirect(`/${req.session.userId}/profile/add`);
     } catch (error) {
       res.send(error);
@@ -63,7 +64,7 @@ class UserController {
     //   if (paramUserId != sessionUserId) {
     //     return res.redirect(`/${sessionUserId}${req.path.replace(`/${paramUserId}`, '')}`);
     //   }
-    req.session.userId = 2;
+    req.session.userId = 3;
     next();
     // }
   }
@@ -134,16 +135,19 @@ class UserController {
     try {
       const { userId } = req.session;
       const data = await User.findByPk(userId, {
-        include: {
-          model: Community,
-          include: {
-            model: Persona
+        include: [
+          {
+            model: Community,
+            include: {
+              model: Persona
+            }
+          },
+          {
+            model: Profile
           }
-        }
+        ]
       });
-      console.log(data);
-      console.log(data.Communities)
-      res.render("communities", { data });
+      res.render("communities", { data, userId });
     } catch (error) {
       res.send(error);
     }
@@ -151,7 +155,9 @@ class UserController {
 
   static async showCreateCommunity(req, res) {
     try {
-
+      let { userId } = req.session;
+      console.log(req.session);
+      res.render("create-community", { userId });
     } catch (error) {
       console.log(error);
       res.send(error);
@@ -159,9 +165,13 @@ class UserController {
   }
   static async createCommunity(req, res) {
     try {
+      let { userId } = req.session;
       let { name, description, nickname, bio, profilePicture } = req.body;
-      await Community.create({ name, description, isOwner: true });
-      await Persona.create({ nickname, bio, profilePicture });
+      let newCommunity = await Community.create({ name, description });
+      let newPersona = await Persona.create({ nickname, bio, profilePicture });
+      await CommunityPersona.create({ CommunityId: newCommunity.id, PersonaId: newPersona.id, role: 1 });
+      await UserCommunity.create({ UserId: userId, CommunityId: newCommunity.id, isOwner: true })
+      res.redirect(`/${userId}/communities`);
     } catch (error) {
       console.log(error);
       res.send(error);
@@ -179,8 +189,10 @@ class UserController {
           }
         }
       }
+      let { userId } = req.session;
+      let user = await Profile.findByPk(userId);
       let data = await Community.findAll(options);
-      res.render("join-server", { data });
+      res.render("join-community", { data, userId, user });
     } catch (error) {
       console.log(error);
       res.send(error);
@@ -191,12 +203,59 @@ class UserController {
       let { userId } = req.session;
       let { communityId } = req.body;
 
-      await UserCommunities.create({ UserId: userId, CommunityId: communityId, isOwner: false });
+      await UserCommunity.create({ UserId: userId, CommunityId: communityId, isOwner: false });
+      res.redirect("communities");
     } catch (error) {
       console.log(error);
       res.send(error);
     }
   }
+  static async deleteCommunity(req, res) {
+    try {
+      let { userId } = req.session;
+      let user = await User.findByPk(userId);
+      if (user.role === 1) {
+        let { communityId } = req.params;
+        let communityPersonas = await CommunityPersona.findAll({
+          where: {
+            CommunityId: communityId
+          },
+          attributes: ['PersonaId']
+        });
+
+        let personaIds = communityPersonas.map(el => el.PersonaId);
+
+        await UserCommunity.destroy({
+          where: {
+            CommunityId: communityId
+          }
+        });
+
+        await Community.destroy({
+          where: {
+            id: communityId
+          }
+        });
+
+        await CommunityPersona.destroy({
+          where: {
+            CommunityId: communityId
+          }
+        });
+
+        await Persona.destroy({
+          where: {
+            id: personaIds
+          }
+        });
+      }
+      res.redirect("communities");
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+    }
+  }
+
 }
 
 module.exports = UserController;
