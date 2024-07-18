@@ -32,13 +32,17 @@
         <p class="mt-2 text-md text-gray-900">
             Age: <%= data.Profile.age %>
         </p>
+        <p class="mt-2 text-md text-gray-900">
+            Date Of Birth: <%= formatDate(data.Profile.dateOfBirth) %>
+        </p>
 
         <div class="flex mt-4 justify-center text-gray-900">
             Communities Joined: <%= data.Profile.age %>
         </div>
 
         <div class="mt-4">
-            <button id="checkout-button" class="inline-block bg-blue-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-600 transition duration-300">
+            <button id="checkout-button"
+                class="inline-block bg-blue-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-600 transition duration-300">
                 Proceed to Payment
             </button>
         </div>
@@ -73,10 +77,10 @@
                 },
                 body: JSON.stringify({ amount: 1000, currency: 'usd' }),
             })
-            .then(response => response.json())
-            .then(data => {
-                clientSecret = data.clientSecret;
-            });
+                .then(response => response.json())
+                .then(data => {
+                    clientSecret = data.clientSecret;
+                });
         });
 
         document.getElementById('close-modal').addEventListener('click', () => {

@@ -36,5 +36,12 @@ class PersonaController {
       res.send(error)
     }
   }
+  static async showPost(req, res) {
+    try {
+      let { postId } = req.params;
+    } catch (error) {
+      res.send(error)
+    }
+  }
 }
 module.exports = PersonaController;

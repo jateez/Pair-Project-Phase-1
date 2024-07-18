@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs/dist/bcrypt.js");
 const { User, Persona, Community, Profile, CommunityPersona, UserCommunity } = require("../models/index.js");
-const { Op, where } = require("sequelize");
+const { Op } = require("sequelize");
+const { formatDate } = require("../helpers/helper.js");
 class UserController {
   // GET Register
   static async showRegister(req, res) {
@@ -102,7 +103,7 @@ class UserController {
           },
         ]
       });
-      res.render("profile", { data });
+      res.render("profile", { data, formatDate });
     } catch (error) {
       res.send(error);
     }

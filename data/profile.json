@@ -1,0 +1,32 @@
+[
+    {
+        "firstName": "Buddy",
+        "lastName": "Zeus",
+        "dateOfBirth": "1990-05-15",
+        "gender": "Male"
+    },
+    {
+        "firstName": "Tom",
+        "lastName": "Tech",
+        "dateOfBirth": "1988-11-20",
+        "gender": "Male"
+    },
+    {
+        "firstName": "Jane",
+        "lastName": "Doe",
+        "dateOfBirth": "1992-07-30",
+        "gender": "Female"
+    },
+    {
+        "firstName": "Joe",
+        "lastName": "Gamer",
+        "dateOfBirth": "1995-02-25",
+        "gender": "Male"
+    },
+    {
+        "firstName": "Ann",
+        "lastName": "Cook",
+        "dateOfBirth": "1991-08-10",
+        "gender": "Female"
+    }
+]

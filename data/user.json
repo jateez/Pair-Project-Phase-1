@@ -1,0 +1,32 @@
+[
+    {
+        "username": "budiez",
+        "email": "budiez@gmail.com",
+        "password": "rawPassword",
+        "role": 1
+    },
+    {
+        "username": "techieTom",
+        "email": "techietom@example.com",
+        "password": "techPassword",
+        "role": 2
+    },
+    {
+        "username": "fashionistaJane",
+        "email": "fashionjane@example.com",
+        "password": "fashionPassword",
+        "role": 1
+    },
+    {
+        "username": "gamerJoe",
+        "email": "gamerjoe@example.com",
+        "password": "gamerPassword",
+        "role": 2
+    },
+    {
+        "username": "foodieAnn",
+        "email": "foodieann@example.com",
+        "password": "foodiePassword",
+        "role": 1
+    }
+]

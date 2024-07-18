@@ -13,11 +13,20 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    // let users = JSON.parse(await fs.readFile("./data/user.json", "utf-8")).map(el => {
-    //   el.createdAt = new Date()
-    //   el.updatedAt = new Date()
-    //   return el;
-    // })
+    let profiles = JSON.parse(await fs.readFile("./data/user.json", "utf-8")).map(el => {
+      el.createdAt = new Date()
+      el.updatedAt = new Date()
+      return el;
+    })
+    await queryInterface.bulkInsert("Profiles", profiles)
+
+    let users = JSON.parse(await fs.readFile("./data/user.json", "utf-8")).map(el => {
+      el.createdAt = new Date()
+      el.updatedAt = new Date()
+      return el;
+    })
+    await queryInterface.bulkInsert("Users", users)
+
     // let profiles = JSON.parse(await fs.readFile("./data/profile.json", "utf-8")).map(el => {
     //   el.createdAt = new Date()
     //   el.updatedAt = new Date()
@@ -43,5 +52,7 @@ module.exports = {
      * Example:
      * await queryInterface.bulkDelete('People', null, {});
      */
+    await queryInterface.bulkDelete("Users", null, {})
+    await queryInterface.bulkDelete("Profiles", null, {})
   }
 };
