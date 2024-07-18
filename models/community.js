@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Community.belongsToMany(models.User, { through: models.UserCommunity });
+      Community.belongsToMany(models.Persona, { through: models.CommunityPersona })
     }
   }
   Community.init({

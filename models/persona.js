@@ -11,6 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Persona.belongsToMany(models.Community, { through: models.CommunityPersona });
+      Persona.hasMany(models.Post);
     }
   }
   Persona.init({
