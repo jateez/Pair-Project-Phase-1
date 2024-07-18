@@ -34,18 +34,18 @@ class UserController {
 
       let user = await User.findOne({ where: { email: email } });
       if (!user) {
-        const error = "Invalid, email not found. Please register a new account instead.";
-        return res.redirect(`/login?error=${error}`);
+        const errors = "Invalid, email not found. Please register a new account instead.";
+        return res.redirect(`/login?error=${errors}`);
       }
 
       const isValidPassword = bcrypt.compareSync(password, user.password);
       if (!isValidPassword) {
-        const error = "Invalid, email or password is not correct. Please login with the correct email/password.";
-        return res.redirect(`/login?error=${error}`);
+        const errors = "Invalid, email or password is not correct. Please login with the correct email/password.";
+        return res.redirect(`/login?error=${errors}`);
       }
 
       req.session.userId = user.id;
-      res.redirect(`/${req.session.userId}/profile/add`);
+      return res.redirect(`/${req.session.userId}/profile/add`);
     } catch (error) {
       res.send(error);
     }
@@ -69,7 +69,15 @@ class UserController {
   static async profile(req, res) {
     try {
       let { userId } = req.session;
-      let data = await User.findByPk(id);
+      let data = await User.findByPk(userId, {
+        include: [
+          {
+            model: Community
+          }, {
+            model: Profile
+          },
+        ]
+      });
       res.render("profile", { data });
     } catch (error) {
       res.send(error);
@@ -81,7 +89,7 @@ class UserController {
       let { userId } = req.session;
       let data = await User.findByPk(userId)
       if (data.ProfileId) {
-        res.redirect(`/${userId}/communities`)
+        return res.redirect(`/${userId}/communities`)
       }
       res.render("insert-profile", { data });
     } catch (error) {
@@ -107,6 +115,18 @@ class UserController {
       res.redirect(`/${userId}/communities`);
     } catch (error) {
       console.log(error);
+      res.send(error);
+    }
+  }
+
+  static async communities(req, res) {
+    try {
+      const { userId } = req.session;
+      const data = await User.findByPk(userId, {
+        include: Community
+      });
+      res.render("communities", { data });
+    } catch (error) {
       res.send(error);
     }
   }

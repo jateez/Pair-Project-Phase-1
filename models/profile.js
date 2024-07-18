@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     get fullName() {
-      return `${firstName} ${lastName}`;
+      return `${this.firstName} ${this.lastName}`;
+    }
+    get age() {
+      return new Date().getFullYear() - new Date(this.dateOfBirth).getFullYear();
     }
   }
   Profile.init({
