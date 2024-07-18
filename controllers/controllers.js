@@ -1,7 +1,7 @@
 class Controller {
-  static async home() {
+  static async home(req, res) {
     try {
-      res.send("Home");
+      res.send(req.session.userId);
     } catch (error) {
       res.send(error);
     }
