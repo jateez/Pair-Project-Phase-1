@@ -1,14 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-theme="cupcake" lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>User Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
-<body>
+<body class="flex items-center justify-center min-h-screen">
+    <div class="p-5 border rounded text-center text-gray-500 max-w-sm">
+        <img class="w-32 h-32 rounded-full mx-auto" src="https://loremflickr.com/320/320/girl" alt="">
+        <div class="text-lg mt-5">
+            <a href="#"
+                class="font-medium leading-none text-gray-900 hover:text-indigo-600 transition duration-500 ease-in-out">
+                <%=data.Profile.fullName %>
+            </a>
+            <p class="mt-2">
+                <%= data.username %>
+            </p>
+            <p class="mt-2">
+                <%= data.email %>
+            </p>
+        </div>
 
+        <p class="mt-2 text-md text-gray-900">
+            Gender <%= data.Profile.gender %>
+
+        </p>
+        <p class="mt-2 text-md text-gray-900">
+            Age: <%= data.Profile.age %>
+        </p>
+
+        <div class="flex mt-4 justify-center text-gray-900">
+            Communities Joined: <%= data.Profile.age %>
+        </div>
+
+    </div>
 </body>
 
 </html>
