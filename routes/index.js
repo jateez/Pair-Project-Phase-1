@@ -8,6 +8,7 @@ router.get("/register", UserController.showRegister);
 router.post("/register", UserController.register);
 router.get("/login", UserController.showLogin);
 router.post("/login", UserController.login);
+router.get("/logout", UserController.logout);
 
 router.use("/:userId", UserController.authSession, userRouter);
 module.exports = router;

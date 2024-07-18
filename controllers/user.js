@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs/dist/bcrypt.js");
 const { User, Persona, Community, Profile } = require("../models/index.js");
+const { Op } = require("sequelize");
 class UserController {
   // GET Register
   static async showRegister(req, res) {
@@ -62,8 +63,18 @@ class UserController {
     //   if (paramUserId != sessionUserId) {
     //     return res.redirect(`/${sessionUserId}${req.path.replace(`/${paramUserId}`, '')}`);
     //   }
+    req.session.userId = 2;
     next();
     // }
+  }
+
+  static async logout(req, res) {
+    try {
+      req.session.destroy();
+      res.redirect("/");
+    } catch (error) {
+      res.send(error);
+    }
   }
 
   static async profile(req, res) {
@@ -130,8 +141,59 @@ class UserController {
           }
         }
       });
+      console.log(data);
+      console.log(data.Communities)
       res.render("communities", { data });
     } catch (error) {
+      res.send(error);
+    }
+  }
+
+  static async showCreateCommunity(req, res) {
+    try {
+
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+    }
+  }
+  static async createCommunity(req, res) {
+    try {
+      let { name, description, nickname, bio, profilePicture } = req.body;
+      await Community.create({ name, description, isOwner: true });
+      await Persona.create({ nickname, bio, profilePicture });
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+    }
+  }
+  static async showJoinCommunity(req, res) {
+    try {
+      let { search } = req.query;
+      let options = {}
+
+      if (search) {
+        options.where = {
+          name: {
+            [Op.iLike]: `%${search}%`
+          }
+        }
+      }
+      let data = await Community.findAll(options);
+      res.render("join-server", { data });
+    } catch (error) {
+      console.log(error);
+      res.send(error);
+    }
+  }
+  static async joinCommunity(req, res) {
+    try {
+      let { userId } = req.session;
+      let { communityId } = req.body;
+
+      await UserCommunities.create({ UserId: userId, CommunityId: communityId, isOwner: false });
+    } catch (error) {
+      console.log(error);
       res.send(error);
     }
   }
