@@ -16,6 +16,18 @@ module.exports = (sequelize, DataTypes) => {
       User.belongsTo(models.Profile)
       User.belongsToMany(models.Community, { through: models.UserCommunity });
     }
+
+    async getDataComunitiesPersona(id){
+      return await User.findAll({
+        where: id,
+        include: {
+          model: Community,
+          include: {
+            model: Persona
+          }
+        }
+      });
+    }
   }
   User.init({
     username: DataTypes.STRING,
