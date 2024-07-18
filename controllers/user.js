@@ -53,17 +53,17 @@ class UserController {
 
   // Middleware Auth
   static async authSession(req, res, next) {
-    if (!req.session.userId) {
-      const error = "Please login to your account first";
-      return res.redirect(`/login?error=${error}`);
-    } else {
-      const sessionUserId = req.session.userId;
-      const paramUserId = req.params.userId;
-      if (paramUserId != sessionUserId) {
-        return res.redirect(`/${sessionUserId}${req.path.replace(`/${paramUserId}`, '')}`);
-      }
-      next();
-    }
+    // if (!req.session.userId) {
+    //   const error = "Please login to your account first";
+    //   return res.redirect(`/login?error=${error}`);
+    // } else {
+    //   const sessionUserId = req.session.userId;
+    //   const paramUserId = req.params.userId;
+    //   if (paramUserId != sessionUserId) {
+    //     return res.redirect(`/${sessionUserId}${req.path.replace(`/${paramUserId}`, '')}`);
+    //   }
+    next();
+    // }
   }
 
   static async profile(req, res) {
@@ -101,7 +101,7 @@ class UserController {
     try {
       let { userId } = req.session;
       let { firstName, lastName, gender, dateOfBirth } = req.body;
-      let userProfile = await findByPk(userId);
+      let userProfile = await Profile.findByPk(userId);
       if (!userProfile) {
         let data = await Profile.create({ firstName, lastName, gender, dateOfBirth });
         await User.update({
