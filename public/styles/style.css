@@ -5,10 +5,10 @@
   .custom-background {
     display: flex;
     flex-direction: column;
-    background-color: #222831; /* Ganti dengan warna yang diinginkan */
+    background-color: #222831;
     min-height: 100vh;
 }
 
 .custom-bg {
-    background: #1a202c; /* Example background color */
+    background: #1a202c;
 }
