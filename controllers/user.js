@@ -5,7 +5,8 @@ class UserController {
   // GET Register
   static async showRegister(req, res) {
     try {
-      res.render("register")
+      let { errors } = req.query;
+      res.render("register", { errors })
     } catch (error) {
       res.send(error)
     }
@@ -17,13 +18,19 @@ class UserController {
       await User.create({ username, email, password })
       res.redirect("/login");
     } catch (error) {
-      res.send(error)
+      if (error.name === "SequelizeValidationError") {
+        let errors = error.errors.map(el => el.message)
+        res.redirect(`/register?errors=${errors}`);
+      } else {
+        res.send(error);
+      }
     }
   }
   // GET Login
   static async showLogin(req, res) {
     try {
-      res.render("login")
+      let { errors } = req.query;
+      res.render("login", { errors })
     } catch (error) {
       res.send(error)
     }
@@ -36,20 +43,25 @@ class UserController {
       let user = await User.findOne({ where: { email: email } });
       if (!user) {
         const errors = "Invalid, email not found. Please register a new account instead.";
-        return res.redirect(`/login?error=${errors}`);
+        return res.redirect(`/login?errors=${errors}`);
       }
 
       const isValidPassword = bcrypt.compareSync(password, user.password);
       if (!isValidPassword) {
         const errors = "Invalid, email or password is not correct. Please login with the correct email/password.";
-        return res.redirect(`/login?error=${errors}`);
+        return res.redirect(`/login?errors=${errors}`);
       }
 
       req.session.userId = user.id;
       req.session.role = user.role;
       return res.redirect(`/${req.session.userId}/profile/add`);
     } catch (error) {
-      res.send(error);
+      if (error.name === "SequelizeValidationError") {
+        let errors = error.errors.map(el => el.message)
+        res.redirect(`/login?errors=${errors}`);
+      } else {
+        res.send(error);
+      }
     }
   }
 
@@ -134,21 +146,24 @@ class UserController {
   static async communities(req, res) {
     try {
       const { userId } = req.session;
-      const data = await User.findByPk(userId, {
-        include: [
-          {
-            model: Community,
-            include: {
-              model: Persona
-            }
-          },
-          {
-            model: Profile
-          }
-        ]
-      });
+      // const data = await User.findByPk(userId, {
+      //   include: [
+      //     {
+      //       model: Community,
+      //       include: {
+      //         model: Persona
+      //       }
+      //     },
+      //     {
+      //       model: Profile
+      //     }
+      //   ]
+      // });
+
+      const data = await User.getDataCommunitiesPersona(userId);
       res.render("communities", { data, userId });
     } catch (error) {
+      console.log(error)
       res.send(error);
     }
   }
@@ -204,7 +219,7 @@ class UserController {
       let { communityId } = req.body;
 
       await UserCommunity.create({ UserId: userId, CommunityId: communityId, isOwner: false });
-      res.redirect("communities");
+      res.redirect(`/${userId}/communities`);
     } catch (error) {
       console.log(error);
       res.send(error);
@@ -249,13 +264,30 @@ class UserController {
           }
         });
       }
-      res.redirect("communities");
+      res.redirect(`/${userId}/communities`);
     } catch (error) {
       console.log(error);
       res.send(error);
     }
   }
+  static async communityPage(req, res) {
+    try {
+      const community = await Community.findByPk(communityId, {
+        include: {
+          model: Persona,
+          include: Post
+        }
+      });
 
+      const posts = [];
+      community.personas.forEach(persona => {
+        posts.push(...persona.posts);
+      });
+      res.render("communities-page", { data: posts })
+    } catch (error) {
+      res.send(error);
+    }
+  }
 }
 
 module.exports = UserController;

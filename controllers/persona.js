@@ -3,7 +3,7 @@ const { Persona } = require("../models/index.js");
 class PersonaController {
   static async home(req, res) {
     try {
-
+      res.render("communities-page")
     } catch (error) {
       res.send(error)
     }
