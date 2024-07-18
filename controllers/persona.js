@@ -39,6 +39,7 @@ class PersonaController {
   static async showPost(req, res) {
     try {
       let { postId } = req.params;
+
     } catch (error) {
       res.send(error)
     }
