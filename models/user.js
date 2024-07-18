@@ -13,12 +13,30 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.belongsTo(models.Profile)
+      User.belongsToMany(models.Community, { through: models.UserCommunity });
     }
   }
   User.init({
     username: DataTypes.STRING,
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        isEmail: true,
+        notNull: true,
+        notEmpty: true,
+      }
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        len: [8],
+        notNull: true,
+        notEmpty: true,
+      }
+    },
     role: DataTypes.INTEGER,
     ProfileId: DataTypes.INTEGER
   }, {
@@ -30,6 +48,7 @@ module.exports = (sequelize, DataTypes) => {
     const hash = bcrypt.hashSync(user.password, salt);
     console.log(salt, hash, user.password)
     user.password = hash;
+    // user.ProfileId = user.id;
   })
   return User;
 };

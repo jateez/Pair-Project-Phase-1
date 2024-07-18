@@ -10,5 +10,4 @@ router.get("/login", UserController.showLogin);
 router.post("/login", UserController.login);
 
 router.use("/:userId", UserController.authSession, userRouter);
-
 module.exports = router;
