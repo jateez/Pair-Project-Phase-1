@@ -113,10 +113,13 @@
                                                     </td>
                                                     <td>
                                                         <% if (el.Personas && el.Personas.length> 0) { %>
-                                                            <%= el.Personas[0].nickname %>
-                                                                <% } else { %>
-                                                                    No persona available
-                                                                    <% } %>
+                                                            <a
+                                                                href="/<%= userId %>/communities/<%= el.id %>/<%= el.Personas[0].id %>">
+                                                                <%= el.Personas[0].nickname %>
+                                                            </a>
+                                                            <% } else { %>
+                                                                No persona available
+                                                                <% } %>
                                                     </td>
                                                     <% if (data.role===1) { %>
                                                         <td>

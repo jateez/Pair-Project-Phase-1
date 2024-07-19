@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html data-theme="cupcake" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" -->
+    <!-- rel="stylesheet"> -->
+    <title>
+        Edit Post
+    </title>
+</head>
+
+<body>
+    <%- include('./partials/_navbar') %>
+        <div class="container py-10">
+            <div class="card w-[100dwh] flex items-center">
+                <div class="bordered rounded shadow-lg card-body w-[50dvh]">
+                    <form class=""
+                        action="/<%= userId %>/communities/<%= communityId %>/<%= personaId %>/posts/<%= data.id %>/edit"
+                        method="post">
+                        <h1>Edit Post</h1>
+                        <h2>Post ID <%= data.id %>
+                        </h2>
+                        <div class="">
+                            <label class="label-text" for="description">Post Description</label>
+                            <br>
+                            <input class="input input-bordered input-sm" type="text" name="description" id="description"
+                                value="<%= data.description %>">
+                        </div>
+                        <div class="">
+                            <label class="label-text" for="imageUrl">imageUrl</label>
+                            <br>
+                            <input class="input input-bordered input-sm" type="text" name="imageUrl" id="imageUrl"
+                                value="<%= data.imageUrl %>">
+                        </div>
+
+                        <input class="btn btn-outline-primary hover:bg-[#3DEBB7]" type="submit" value="Edit Post">
+                    </form>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

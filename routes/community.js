@@ -9,6 +9,9 @@ router.post("/create", UserController.createCommunity)
 router.get("/join", UserController.showJoinCommunity)
 router.post("/join", UserController.joinCommunity)
 router.get("/:communityId/delete", UserController.deleteCommunity);
-router.get("/:communityId/:personaId", PersonaController.home);
-router.get("/:communityId/:personaId/profile", UserController.showLogin);
+router.get("/:communityId/:personaId", UserController.communityPage);
+router.get("/:communityId/:personaId/posts", UserController.posts);
+router.post("/:communityId/:personaId/posts/create", UserController.createPost);
+router.get("/:communityId/:personaId/posts/:postId/edit", UserController.showEditPost);
+router.post("/:communityId/:personaId/posts/:postId/edit", UserController.editPost);
 module.exports = router;

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.6/css/unicons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@iconscout/unicons@4.0.8/css/line.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/web.css">
+    <link rel="stylesheet" href="/image.css">
+    <link rel="stylesheet" href="/profile.css">
+</head>
+
+<body>
+    <nav>
+        <div class="container">
+            <h2 class="log text-2xl text-mono">Project X</h2>
+            <!-- 
+            <div class="create">
+                <label class="btn btn-primary" for="create-post">Create</label>
+                <div class="profile-photo">
+                    <img src="/public/assets/pf.jpg" alt="Profile Photo">
+                </div>
+            </div> -->
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div class="left">
+                <a href="/<%= userId %>/communities/<%= communityId %>/<%= personaId %>/posts/" class="profile"
+                    id="profile-link">
+                    <div class="profile-photo">
+                        <img src="/public/assets/pf.jpg" alt="Profile Photo">
+                    </div>
+                    <div class="handle">
+                        <h4>Nueruse</h4>
+                        <p class="text-muted">@nody</p>
+                    </div>
+                </a>
+
+                <div class="sidebar">
+                    <a class="menu-item active" id="profile-button">
+                        <span>
+                            <i class="uil uil-user-circle px-4">Profile</i>
+                        </span>
+                    </a>
+                    <a class="menu-item" id="notifications">
+                        <span>
+                            <i class="uil uil-home px-4">Back</i>
+                        </span>
+                    </a>
+                </div>
+                <label for="create-post" class="btn btn-primary">Create Post</label>
+            </div>
+
+            <div class="middle">
+                <form action="/<%= userId %>/communities/<%= communityId %>/<%= personaId %>/posts/create" method="post"
+                    class="create-post">
+                    <input type="text" placeholder="Apa yang anda pikirkan hari ini ?" id="create-post"
+                        name="description">
+                    <i class=" uil uil-image-plus"></i>
+                    <input type="submit" value="Post" class="btn btn-primary"
+                        action="/<%= userId %>/communities/<%= communityId %>/<%= personaId %>/posts/create">
+                </form>
+
+                <div class="feeds">
+                    <% data.forEach(post=> { %>
+                        <div class="feed">
+                            <div class="head">
+                                <div class="user">
+                                    <div class="profile-photo">
+                                        <img src="<%= post.posterProfilePhoto %>" alt="Profile Photo">
+                                    </div>
+                                    <div class="info">
+                                        <h3>
+                                            <%= post.posterName %>
+                                        </h3>
+                                        <small>
+                                            <%= post.createdAt.toLocaleString() %>
+                                        </small>
+                                    </div>
+                                </div>
+                                <span class="edit">
+                                    <i class="uil uil-ellipsis-h">
+                                        <div id="dropdown"
+                                            class="z-10 hidden text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                            <ul class="py-2" aria-labelledby="dropdownButton">
+                                                <li>
+                                                    <a href="#"
+                                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Edit</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"
+                                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Export
+                                                        Data</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#"
+                                                        class="block px-4 py-2 text-sm text-red-600 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Delete</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </i>
+                                </span>
+                            </div>
+                            <div class="photo">
+                                <img src="<%= post.photo %>" alt="Post Image" class="blur-image" id="image">
+                                <!-- Assuming post has a 'photo' field -->
+                            </div>
+                            <div class="popup hero bg-base-200 min-h-screen" id="popup">
+                                <div class="hero-content flex-col lg:flex-row">
+                                    <span class="close" id="closeBtn">&times;</span>
+                                    <a href="#"
+                                        class="flex flex-col items-center bg-white rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+                                        <img class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg popup-image"
+                                            src="<%= post.photo %>"> <!-- Assuming post has a 'photo' field -->
+                                        <div class="flex flex-col justify-between p-4 leading-normal">
+                                            <h5
+                                                class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                                <%= post.title %>
+                                            </h5> <!-- Assuming post has a 'title' field -->
+                                            <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">
+                                                <%= post.description %>
+                                            </p> <!-- Assuming post has a 'description' field -->
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="action-button">
+                                <div class="interaction-buttons">
+                                    <span><i class="uil uil-heart"></i></span>
+                                    <span><i class="uil uil-comment"></i></span>
+                                    <span><i class="uil uil-share"></i></span>
+                                </div>
+                            </div>
+                            <div class="liked-by">
+                                <span>
+                                    <img src="/public/assets/pf.jpg" alt="">
+                                </span>
+                                <p>Liked by <b>Nevi</b></p>
+                            </div>
+                            <div class="cartion">
+                                <p><b>
+                                        <%= post.posterName %>
+                                    </b> Lokasi di kecamatan Tosari</p>
+                                <span class="harsh-tag">#Tech</span>
+                            </div>
+                            <div class="comments text-muted">
+                                View all comments
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+
+            <div class="right">
+                <div class="messages">
+                    <div class="search-bar">
+                        <i class="uil uil-search"></i>
+                        <input type="search" placeholder="Search" id="message-search">
+                    </div>
+                    <div class="category">
+                        <h6 class="active">Primary</h6>
+                        <h6>General</h6>
+                    </div>
+                    <div class="message-body">
+                        <h5>KKK</h5>
+                        <p class="text-muted">JUUUYUYY</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="profile-popup" class="profile-popup">
+        <div class="profile-popup-content">
+            <span class="close" id="profile-close">&times;</span>
+            <div class="profile-photo">
+                <img src="/public/assets/pf.jpg" alt="Profile Photo">
+            </div>
+            <div class="handle">
+                <h4>Nueruse</h4>
+                <p class="text-muted">@nody</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/public/scripts/image.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@iconscout/unicons@4.0.8/script/monochrome/bundle.min.js"></script>
+    <script src="/public/scripts/profile.js"></script>
+</body>
+
+</html>

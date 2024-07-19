@@ -13,7 +13,7 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
     */
-    let profiles = JSON.parse(await fs.readFile("./data/user.json", "utf-8")).map(el => {
+    let profiles = JSON.parse(await fs.readFile("./data/profile.json", "utf-8")).map(el => {
       el.createdAt = new Date()
       el.updatedAt = new Date()
       return el;

@@ -1,4 +1,4 @@
-const { Persona } = require("../models/index.js");
+const { Persona,  } = require("../models/index.js");
 
 class PersonaController {
   static async home(req, res) {

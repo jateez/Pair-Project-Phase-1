@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html data-theme="cupcake" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com"> -->
+    <!-- <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> -->
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" -->
+    <!-- rel="stylesheet"> -->
+    <title>
+        Posts
+    </title>
+</head>
+
+<body>
+    <%- include('./partials/_navbar') %>
+        <div class="pt-20">
+            <form action="" method="get">
+                <div class="flex-row items-center">
+                    <input type="search" placeholder="Search" id="search" name="search"
+                        class="input input-bordered w-10/12 mx-10" />
+                    <input type="submit" value="Search" class="btn btn-outline w-1/12">
+                </div>
+            </form>
+        </div>
+        <div class="pt-20">
+            <div class="flex justify-center items-center">
+                <div class="card w-screen">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-lg">Post Id</th>
+                                    <th class="text-lg">Description</th>
+                                    <th class="text-lg">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% posts.forEach(el=> { %>
+                                    <tr class="hover">
+                                        <td>
+                                            <%= el.id %>
+                                        </td>
+                                        <td>
+                                            <%= el.description %>
+                                        </td>
+                                        <td>
+                                            <a href="/<%= userId %>/communities/<%= communityId %>/<%= personaId %>/posts/<%= el.id %>/edit"
+                                                class="btn btn-outline-accent bg-[#44aaee] text-white hover:bg-[#3DEBB7]">Edit</a>
+                                        </td>
+                                    </tr>
+                                    <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center pb-10">
+                <a class="btn btn-outline bg-[#5cb85c] text-white" href="/<%= userId %>/communities/<%= communityId %>/<%= personaId%>"> Get Back </a>
+            </div>
+        </div>
+</body>
+
+</html>

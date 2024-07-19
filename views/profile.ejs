@@ -41,10 +41,13 @@
         </div>
 
         <div class="mt-4">
-            <button id="checkout-button"
-                class="inline-block bg-blue-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-600 transition duration-300">
-                Proceed to Payment
-            </button>
+            <% if (data.role===2) { %>
+                <button id="checkout-button"
+                    class="inline-block bg-blue-500 text-white px-6 py-2 rounded-md font-semibold hover:bg-blue-600 transition duration-300">
+                    Proceed to Payment
+                </button>
+
+                <% } %>
         </div>
     </div>
 
@@ -52,16 +55,16 @@
         <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
             <button id="close-modal" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">✖</button>
             <h2 class="text-xl font-bold mb-4">Enter Your Payment Details</h2>
-            <form id="payment-form" class="space-y-4">
+            <form id="payment-form" class="space-y-4" action="/<%= userId %>/profile/changeRole" method="get">
                 <div id="card-element" class="p-3 border border-gray-300 rounded-md"></div>
-                <button type="submit" class="w-full bg-blue-500 text-white p-3 rounded-md font-bold">Pay</button>
+                <input type="submit" class="w-full bg-blue-500 text-white p-3 rounded-md font-bold" value="Pay" />
                 <div id="card-errors" role="alert" class="text-red-500 mt-2"></div>
             </form>
         </div>
     </div>
 
     <script>
-        const stripe = Stripe('your_stripe_publishable_key');
+        const stripe = Stripe('pk_test_51Pe026IxOJuBOWADmn7MdEaKXyRldWfdyI1Jw9h5SS7qnoB0LcAuRohWUU1aTm6zLaItFcCBZaKxzuXHmXKqBZ5t00fcvZGehS');
         const elements = stripe.elements();
         const cardElement = elements.create('card');
         cardElement.mount('#card-element');
@@ -87,22 +90,7 @@
             document.getElementById('payment-modal').classList.add('hidden');
         });
 
-        document.getElementById('payment-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
-                payment_method: {
-                    card: cardElement,
-                },
-            });
 
-            if (error) {
-                const errorElement = document.getElementById('card-errors');
-                errorElement.textContent = error.message;
-            } else {
-                alert('Payment successful!');
-                document.getElementById('payment-modal').classList.add('hidden');
-            }
-        });
     </script>
 </body>
 
